@@ -65,8 +65,6 @@ module CircuitPatchTools
       define_method "_#{f}=" do |v|
         @parameters[f] = v
       end
-
-      private "_#{f}", "_#{f}="
     end
 
     alias_method :name, :_patch_name
