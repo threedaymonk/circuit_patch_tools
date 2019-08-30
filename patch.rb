@@ -1,9 +1,8 @@
+require_relative './attr_lookup'
+require_relative './any'
+
 class Patch
-  class Any
-    def self.===(*)
-      true
-    end
-  end
+  extend AttrLookup
 
   SYSEX = [
     ['C',    :sysex,                0xF0],
@@ -49,6 +48,14 @@ class Patch
     new(FIELDS.zip(values).to_h)
   end
 
+  def initialize(parameter_hash)
+    @parameters = parameter_hash
+  end
+
+  def pack
+    FIELDS.map { |f| @parameters[f] }.pack(PATTERN)
+  end
+
   FIELDS.each do |f|
     define_method "_#{f}" do
       @parameters.fetch(f)
@@ -57,58 +64,17 @@ class Patch
     define_method "_#{f}=" do |v|
       @parameters[f] = v
     end
+
+    private "_#{f}", "_#{f}="
   end
 
   alias_method :name, :_patch_name
+  alias_method :name=, :_patch_name=
   alias_method :location, :_location
+  alias_method :location=, :_location=
 
-  def self.lookup(ext, int, table)
-    define_method ext do
-      table.fetch(send(int))
-    end
-
-    define_method "#{ext}=" do |v|
-      send "#{int}=", table.index(v)
-    end
-  end
-
-  def polyphony
-    POLYPHONY.fetch(_voice_polyphony_mode)
-  end
-
-  def polyphony=(v)
-    _voice_polyphony_mode = POLYPHONY.index(v)
-  end
-
-  def genre
-    GENRES.fetch(_patch_genre)
-  end
-
-  def genre=(v)
-    _patch_genre = GENRES.index(v)
-  end
-
-  def category
-    CATEGORIES.fetch(_patch_category)
-  end
-
-  def category=(v)
-    _patch_category = CATEGORIES.index(v)
-  end
-
-  def command
-    COMMANDS.fetch(_command)
-  end
-
-  def command=(v)
-    _command = COMMANDS.index(v)
-  end
-
-  def initialize(parameter_hash)
-    @parameters = parameter_hash
-  end
-
-  def pack
-    FIELDS.map { |f| @parameters[f] }.pack(PATTERN)
-  end
+  attr_lookup :polyphony, :_voice_polyphony_mode, POLYPHONY
+  attr_lookup :genre, :_patch_genre, GENRES
+  attr_lookup :category, :_patch_category, CATEGORIES
+  attr_lookup :command, :_command, COMMANDS
 end
