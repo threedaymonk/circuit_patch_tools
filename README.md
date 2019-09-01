@@ -9,4 +9,10 @@ Tools for manipulating Novation Circuit patches:
 
 ## Installation
 
+Requires Ruby.
+
     gem install circuit_patch_tools
+
+## Usage
+
+    circuit_patch --help
