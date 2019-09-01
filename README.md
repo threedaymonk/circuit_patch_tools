@@ -6,3 +6,7 @@ Tools for manipulating Novation Circuit patches:
 - make them `portable` so that they can be auditioned as the current patch
 - print `info` about a single patch file
 - `join` individual files into a bank
+
+## Installation
+
+    gem install circuit_patch_tools
