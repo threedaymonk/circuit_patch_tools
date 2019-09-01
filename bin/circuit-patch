@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+require 'circuit_patch_tools/commands'
+require 'optparse'
+
+handlers = CircuitPatchTools::Commands.handlers
+handler = handlers.find { |h| h.name == ARGV.first }
+if handler
+  handler.run ARGV.drop(1)
+else
+  OptionParser.new do |opts|
+    opts.banner = <<~END
+      circuit-patch
+
+      Usage: circuit-patch command [command-options] ...
+
+      Commands:
+      #{handlers.map { |c| "  #{c.name}" }.join("\n")}
+
+      Options:
+    END
+    opts.on('-h', '--help', 'Print this help') do
+    end
+    puts opts
+  end.parse!
+end
