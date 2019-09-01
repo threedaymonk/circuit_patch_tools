@@ -5,7 +5,7 @@ module CircuitPatchTools
   module Commands
     class Join
       DEFAULT_OPTIONS = {
-        output: 'patches.sysx'
+        output: 'patches.sysex'
       }
 
       def name
@@ -23,7 +23,7 @@ module CircuitPatchTools
           opts.banner = <<~END
             #{name}: #{description}
 
-            Usage: circuit-patch #{name} [options] patch1.sysx [patch2.sysx ...]
+            Usage: circuit-patch #{name} [options] patch1.sysex [patch2.sysex ...]
 
             Options:
           END

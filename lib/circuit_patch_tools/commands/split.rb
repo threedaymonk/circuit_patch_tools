@@ -7,7 +7,7 @@ module CircuitPatchTools
       FIELDS = %i[ name command location genre category polyphony ]
 
       DEFAULT_OPTIONS = {
-        filename: '%<location>02d - %<name>s.sysx'
+        filename: '%<location>02d - %<name>s.sysex'
       }
 
       PATCH_REGEXP = /\xF0\x00\x20\x29\x01\x60[\x00-\xFF]{343}\xF7/n
@@ -27,7 +27,7 @@ module CircuitPatchTools
           opts.banner = <<~END
             #{name}: #{description}
 
-            Usage: circuit-patch #{name} [options] patch1.sysx [patch2.sysx ...]
+            Usage: circuit-patch #{name} [options] patch1.sysex [patch2.sysex ...]
 
             Options:
           END
